@@ -8,7 +8,7 @@
     </p>
     <hr />
     <content>{{ newsDetail.content }}</content>
-    <newsComment></newsComment>
+    <newsComment :artid="id"></newsComment>
   </div>
 </template>
 

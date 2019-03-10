@@ -15,9 +15,6 @@ import app from './App.vue'
 // 导入自己的路由模块文件
 import router from './router.js'
 
-// 导入假数据
-import './fakedata.js'
-
 // 按需导入 mint-ui 组件
 import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
 Vue.component(Header.name, Header)
