@@ -1,11 +1,12 @@
 <template>
   <div class="cmt">
-    <h1>发表评论</h1>
+    <h1 class="cmt_tit">发表评论</h1>
     <hr>
-    <textarea maxlength="120" placeholder="请输入评论的内容(最多120个字)"></textarea>
-    <mt-button type="primary" size="large">发表评论</mt-button>
+    <input type="text" class="cmt_user_name" v-model="cmt_name" placeholder="请输入用户名(最多12个字)" maxlength="12">
+    <textarea class="cmt_content" maxlength="120" placeholder="请输入评论的内容(最多120个字)" v-model="cmt_content"></textarea>
+    <mt-button type="primary" @click="postComment" size="large">发表评论</mt-button>
     <div class="cmt-container">
-      <div class="cmt-box" v-for="(item, i) of commentList" :key="item.id">
+      <div class="cmt-box" v-for="(item, i) of commentList" :key="(item.i)">
         <div class="cmt-header">第{{ i+1 }}楼&nbsp;&nbsp;用户: {{ item.user_name }}&nbsp;&nbsp;发表时间: {{ item.add_time }}</div>
         <div class="cmt-cotent">{{ item.content }}</div>
       </div>
@@ -16,6 +17,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import moment from 'moment'
 export default {
   props: ['artid'],
   data () {
@@ -23,20 +25,23 @@ export default {
       commentList: [],
       id: this.artid,
       pageIndex: 1,
-      cmtloading: '加载评论'
+      cmtloading: '加载评论',
+      cmt_content: '',
+      cmt_name: ''
     }
   },
   created () {
     this.getComment()
   },
   methods: {
+    // 获取评论
     getComment () {
       this.$http.get('getComment', { params: { artid: this.id,  pageIndex: this.pageIndex} }).then((res) => {
         if (res.body.status === 0) {
           this.commentList = this.commentList.concat(res.body.list)
           if (res.body.list.length === 0) {
             Toast('到底了o(╯□╰)o')
-            this.cmtloading = '已加载完毕'
+            this.cmtloading = '评论已加载完毕'
             document.querySelector('#loading').setAttribute('disabled', 'disabled')
           }  
         } else {
@@ -44,9 +49,32 @@ export default {
         }
       })
     },
+    // 加载更多评论
     getMoreCMT () {
       this.pageIndex++
       this.getComment()
+    },
+    postComment () {
+      if (this.cmt_content === '' || this.cmt_name === '') {
+          Toast('评论或用户名不能为空')
+          return 
+      }
+      this.$http.post('postComment', {
+         cmt_name: this.cmt_name,
+         cmt_content: this.cmt_content,
+         artid: this.id
+      }).then((res) => {
+        if (res.body.status === 0) {
+          this.commentList.unshift({
+            add_time: moment().format('YYYY-M-D HH:mm:ss'),
+            user_name: this.cmt_name,
+            content: this.cmt_content
+          })
+          this.cmt_name = this.cmt_content = ''
+        } else {
+          Toast('发表评论失败')
+        }
+      })
     }
   }
 }
@@ -55,10 +83,14 @@ export default {
 <style lang="scss" scope>
   .cmt {
     font-size: 13px;
-    h1 {
+    .cmt_tit {
       font-size: 18px;
     }
-    textarea {
+    .cmt_user_name {
+      font-size: 14px;
+      height: 36px;
+    }
+    .cmt_content {
       font-size: 14px;
       height: 90px;
       margin-bottom: 0;

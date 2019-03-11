@@ -1,8 +1,8 @@
 <template>
   <div class="newsDetailPage">
-    <h1>{{ newsDetail.title }}</h1>
-    <h2>--{{ newsDetail.subtitle }}</h2>
-    <p>
+    <h1 class="newsDetail_tit">{{ newsDetail.title }}</h1>
+    <h2 class="newsDetail_subtit">--{{ newsDetail.subtitle }}</h2>
+    <p class="newsDetail_info">
       <span>发布时间: {{ newsDetail.date }}</span>
       <span>点击: {{ newsDetail.click }}次</span>
     </p>
@@ -46,17 +46,17 @@ export default {
   .newsDetailPage {
     padding: 0 4px;
     font-size: 13px;
-    h1 {
+    .newsDetail_tit {
       text-align: center;
       font-size: 18px;
     }
-    p {
+    .newsDetail_info {
       clear: both;
       display: flex;
       justify-content: space-between;
       color: royalblue;
     }
-    h2 {
+    .newsDetail_subtit {
       float: right;
       font-size: 16px;
     }
