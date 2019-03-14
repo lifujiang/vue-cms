@@ -16,11 +16,12 @@ import app from './App.vue'
 import router from './router.js'
 
 // 按需导入 mint-ui 组件
-import { Header, Swipe, SwipeItem, Button } from 'mint-ui'
-Vue.component(Header.name, Header)
-Vue.component(Swipe.name, Swipe)
-Vue.component(SwipeItem.name, SwipeItem)
-Vue.component(Button.name, Button)
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+import Cube from 'cube-ui'
+
+Vue.use(MintUI)
+Vue.use(Cube)
 
 // 安装 vue-resource
 Vue.use(VueResource)

@@ -19,7 +19,7 @@
 import { Toast } from 'mint-ui'
 import moment from 'moment'
 export default {
-  props: ['artid'],
+  props: ['artid'], // 这里的作用是从父元素获取值
   data () {
     return {
       commentList: [],

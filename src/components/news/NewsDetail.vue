@@ -21,13 +21,13 @@ export default {
       newsDetail: {}
     }
   },
-  props: ['id'],
+  props: ['id'], // 这里的作用是解耦属性
   created () {
     this.getNewsDetail()
   },
   methods: {
     getNewsDetail () {
-      this.$http.get('getNewsDetail', { params: { id: this.id } }).then((res) => {
+      this.$http.get('getNewsDetail', { params: { id: this.id } }).then(res => {
         if (res.body.status === 0) {
           this.newsDetail = res.body.list
         } else {

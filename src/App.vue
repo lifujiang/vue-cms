@@ -18,11 +18,11 @@
         <span class="mui-icon mui-icon-contact"></span>
         <span class="mui-tab-label">会员</span>
       </router-link>
-      <router-link class="mui-tab-item" to="cart">
+      <router-link class="mui-tab-item" to="/cart">
         <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge">0</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
-      <router-link class="mui-tab-item" to="search">
+      <router-link class="mui-tab-item" to="/search">
         <span class="mui-icon mui-icon-search"></span>
         <span class="mui-tab-label">搜索</span>
       </router-link>
@@ -37,13 +37,16 @@
 </script>
 
 
-<style>
+<style lang="scss">
 /* 顶部 */
   .app-container{
     /* 加padding的目的是因为顶部是浮动的, 会覆盖内容 */
     padding-top: 40px;
     padding-bottom: 50px;
     overflow-x: hidden;
+    .mint-header.is-fixed {
+      z-index: 99;
+    }
   }
 
   .v-enter {
