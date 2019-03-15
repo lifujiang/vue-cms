@@ -2,7 +2,9 @@
   <div class="app-container">
 
     <!-- 顶部 -->
-    <mt-header fixed title="固定在顶部"></mt-header>
+    <mt-header fixed title="固定在顶部">
+        <mt-button icon="back" slot="left" @click="goBack" v-if="hidden">返回</mt-button>
+    </mt-header>
 
     <!-- 中间路由控制区域 -->
     <transition>
@@ -33,7 +35,34 @@
 </template>
 
 <script>
-
+const hiddenList = [ '/home', '/member', '/cart', '/search' ]
+export default {
+  data () {
+    return {
+      hidden: false
+    }
+  },
+  watch: {
+    '$route': 'isHidden'
+  },
+  created () {
+    this.isHidden()
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    },
+    isHidden () {
+      for (var item of hiddenList) {
+        if (this.$route.path === item) {
+          this.hidden = false
+          return
+        }
+      }
+      this.hidden = true
+    }
+  }
+}
 </script>
 
 
@@ -44,6 +73,9 @@
     padding-top: 40px;
     padding-bottom: 50px;
     overflow-x: hidden;
+    // 文字内容自动换行
+    white-space:normal;  
+    word-break:break-all;  
     .mint-header.is-fixed {
       z-index: 99;
     }

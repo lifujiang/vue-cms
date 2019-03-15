@@ -7,7 +7,7 @@
       <span>点击: {{ newsDetail.click }}次</span>
     </p>
     <hr />
-    <content>{{ newsDetail.content }}</content>
+    <div class="newsDetail_content">{{ newsDetail.content }}</div>
     <newsComment :artid="id"></newsComment>
   </div>
 </template>
@@ -48,6 +48,7 @@ export default {
     font-size: 13px;
     .newsDetail_tit {
       text-align: center;
+      margin: 15px;
       font-size: 18px;
     }
     .newsDetail_info {
@@ -57,8 +58,12 @@ export default {
       color: royalblue;
     }
     .newsDetail_subtit {
+      margin-bottom: 15px;
       float: right;
       font-size: 16px;
+    }
+    .newsDetail_content {
+      margin: 15px;
     }
   }
 </style>

@@ -109,14 +109,12 @@ export default {
       }
       img[lazy=loading] {
         width: 40px;
-        height: 450px;
+        height: 200px;
         margin: auto;
       }
       .zhaiyao {
         width: 100%;
         max-height: 85px;
-        word-wrap:break-word;
-        overflow:hidden;
         color: #fff;
         position: absolute;
         bottom: 0;

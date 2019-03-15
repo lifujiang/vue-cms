@@ -46,6 +46,8 @@ export default {
     font-size: 15px;
   }
   .mui-ellipsis{
+    margin-top: 13px;
+    font-size: 13px;
     color:royalblue;
     display: flex;
     justify-content: space-between;

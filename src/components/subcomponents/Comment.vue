@@ -84,6 +84,7 @@ export default {
   .cmt {
     font-size: 13px;
     .cmt_tit {
+      font-weight: bold;
       font-size: 18px;
     }
     .cmt_user_name {
