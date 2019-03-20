@@ -1,31 +1,41 @@
 <template>
   <div class="imgDetailPage">
-    <h1 class="img_tit">标题处</h1>
+    <h1 class="img_tit">{{ detailList.title }}</h1>
     <div class="info">
-      <span>发布时间: 2019-3-14 20:07:27</span>
-      <span>点击: 0次</span>
+      <span>发布时间: {{ detailList.date }}</span>
+      <span>点击: {{ detailList.click }}次</span>
     </div>
     <hr>
-    <div class="img_content" v-html="content"></div>
+    <div class="img_content">{{ detailList.content }}</div>
     <newsComment :artid="id"></newsComment>    
   </div>
 </template>
 
 <script>
 import newsComment from '../subcomponents/Comment.vue'
-const content = 'sadlkfjsl;dkjfkljsadf;jsad;kjfs;djakfdshkablfkhdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffsakljfhdshfjsdabhlfkhsdlkfhsadlkjfhaklsjdgflksaffdgflkjgsdlk'
 export default {
   data () {
     return {
-      content
+      detailList: {}
     }
   },
   created() {
-    
+    this.getImgDetail()
   },
-  props: ['id'], // 这里的作用是解耦属性,
+  props: ['id'], // 这里的作用是解耦属性
   components: {
     newsComment
+  },
+  methods: {
+    getImgDetail () {
+      this.$http.get('getImgDetail', { params: { id: this.id } }).then(res => {
+        if (res.body.status === 0) {
+          this.detailList = res.body.list
+        } else {
+          Toast('加载图片详情失败')
+        }
+      })
+    }
   }
 }
 </script>
@@ -47,6 +57,7 @@ export default {
     }
     .img_content {
       margin-bottom: 10px;
+      text-indent: 2em;
     }
   }
 </style>

@@ -58,6 +58,7 @@ export default {
     getImgList () {
       this.$http.get('getImgList', { params: { cateid: this.navIndex } }).then(res => {
         if (res.body.status === 0) {
+          console.log(res.body)
           this.img_items = res.body.list
         } else {
           Toast('获取图片失败')
