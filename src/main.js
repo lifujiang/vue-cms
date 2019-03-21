@@ -15,16 +15,19 @@ import app from './App.vue'
 // 导入自己的路由模块文件
 import router from './router.js'
 
-// 按需导入 mint-ui 组件
+// 导 mint-ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+// 导入 cube, scroller 部分
 import Cube from 'cube-ui'
 
+// 导入 vue-preview
+import VuePreview from 'vue-preview'
+
+Vue.use(VueResource)
 Vue.use(MintUI)
 Vue.use(Cube)
-
-// 安装 vue-resource
-Vue.use(VueResource)
+Vue.use(VuePreview)
 
 // 指定 vue-resource 根路径
 Vue.http.options.root = 'http://localhost:3030/'
