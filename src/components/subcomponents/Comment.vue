@@ -11,7 +11,7 @@
         <div class="cmt-cotent">{{ item.content }}</div>
       </div>
     </div>
-    <mt-button id="loading" @click="getMoreCMT" type="danger" plain size="large" v-text="cmtloading"></mt-button>
+    <mt-button id="cmtloading" @click="getMoreCMT" type="danger" plain size="large" v-text="cmtloading"></mt-button>
   </div>
 </template>
 
@@ -42,8 +42,8 @@ export default {
           if (res.body.list.length === 0) {
             Toast('到底了o(╯□╰)o')
             this.cmtloading = '评论已加载完毕'
-            document.querySelector('#loading').setAttribute('disabled', 'disabled')
-          }  
+            document.querySelector('#cmtloading').setAttribute('disabled', 'disabled')
+          }
         } else {
           Toast('获取评论失败')
         }
