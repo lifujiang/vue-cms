@@ -10,6 +10,7 @@ import NewDetail from './components/news/NewsDetail.vue'
 import PhotoList from './components/photo/PhotoList.vue'
 import PhotoDetail from './components/photo/PhotoDetail.vue'
 import GoodsList from './components/goods/GoodsList.vue'
+import GoodsDetail from './components/goods/GoodsDetail.vue'
 
 // 3. 创建路由对象
 var router = new VueRouter({
@@ -21,6 +22,7 @@ var router = new VueRouter({
     { path: '/photoList', component: PhotoList },
     { path: '/photodetail/:id', component: PhotoDetail, props: true }, // 这里是通过 props 属性解耦属 params 属性
     { path: '/goodslist', component: GoodsList },
+    { path: '/goodsdetail/:id', component: GoodsDetail, props: true },
     { path: '/member', component: MemberPage },
     { path: '/cart', component: CartPage },
     { path: '/search', component: SearchPage }

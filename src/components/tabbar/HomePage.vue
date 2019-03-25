@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- 轮播图 -->
-    <mt-swipe :auto="2000">
-      <mt-swipe-item v-for="item in lunboList" :key="item.id">
-        <img :src="item.img" alt>
-      </mt-swipe-item>
-    </mt-swipe>
-
+      <swiper :list="lunboList" :isFull="true"></swiper>
     <!-- 九宫格改造的六宫格 -->
     <div class="mui-content">
       <ul class="mui-table-view mui-grid-view mui-grid-9 home-grid">
@@ -54,6 +49,7 @@
 
 <script>
 import { Toast } from 'mint-ui'
+import swiper from '../subcomponents/swiper.vue'
 export default {
   data() {
     return {
@@ -74,19 +70,14 @@ export default {
         }
       })
     }
+  },
+  components: {
+    swiper
   }
 }
 </script>
 
 <style lang="scss" scoped>
-// 轮播图样式
-.mint-swipe {
-  height: 200px;
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
 
 // 六宫格(改)样式
 .mui-grid-view.mui-grid-9{

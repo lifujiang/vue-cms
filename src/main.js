@@ -8,6 +8,7 @@ import VueResource from 'vue-resource'
 // 导入样式
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/iconfont.css'
+import 'vant/lib/vant'
 
 // 导入入口文件
 import app from './App.vue'
@@ -20,9 +21,13 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 // 导入 cube, scroller 部分
 import Cube from 'cube-ui'
-
 // 导入 vue-preview
 import VuePreview from 'vue-preview'
+
+import Vant from 'vant'
+import 'vant/lib/index.css'
+
+Vue.use(Vant)
 
 Vue.use(VueResource)
 Vue.use(MintUI)

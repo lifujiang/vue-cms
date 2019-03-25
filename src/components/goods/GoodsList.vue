@@ -1,6 +1,6 @@
 <template>
   <div class="goodsListPage">
-    <div class="goodsbox" v-for="item in goodsList" :key="item.id">
+    <div class="goodsbox" @click="routerHand(item.id)" v-for="item in goodsList" :key="item.id">
       <img :src="item.src" alt="">
       <h1 class="goodstitle">{{ item.title }}</h1>
       <div class="info">
@@ -49,7 +49,9 @@ export default {
     getMoreGds () {
       this.pageIndex++
       this.getGoodsList()
-
+    },
+    routerHand (id) {
+      this.$router.push({ path: `goodsdetail/${id}`})
     }
   }
 }
