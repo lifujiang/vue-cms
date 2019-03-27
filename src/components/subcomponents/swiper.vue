@@ -18,6 +18,8 @@ export default {
   .swiperPage {
     // 轮播图样式
     .mint-swipe {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       text-align: center;
       height: 200px;
       img {

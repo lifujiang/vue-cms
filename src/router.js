@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router'
 
 // 导入 tabbar 显示的相应组件
+import TestPage from './components/test.vue'
 import HomePage from './components/tabbar/HomePage.vue'
 import MemberPage from './components/tabbar/MemberPage.vue'
 import CartPage from './components/tabbar/CartPage.vue'
@@ -15,6 +16,7 @@ import GoodsDetail from './components/goods/GoodsDetail.vue'
 // 3. 创建路由对象
 var router = new VueRouter({
   routes: [
+    { path: '/test', component: TestPage },
     { path: '/', redirect: '/home' },
     { path: '/home', component: HomePage },
     { path: '/newslist', component: NewsList },

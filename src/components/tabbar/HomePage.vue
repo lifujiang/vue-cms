@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 轮播图 -->
-      <swiper :list="lunboList" :isFull="true"></swiper>
+    <swiper :list="lunboList" :isFull="true"></swiper>
     <!-- 九宫格改造的六宫格 -->
     <div class="mui-content">
       <ul class="mui-table-view mui-grid-view mui-grid-9 home-grid">
@@ -81,6 +81,10 @@ export default {
 
 // 六宫格(改)样式
 .mui-grid-view.mui-grid-9{
+  // 解决垃圾插件导致的相邻组件抖动问题
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  -webkit-transform-style: preserve-3d;
   // It belongs to home-page-grid-ul
   background-color: #fff;
 }
