@@ -43,8 +43,8 @@
         </div>
       </div>
       <div class="mui-card-footer btn">
-        <van-button plain size="large" type="info">图文介绍</van-button>
-        <van-button plain size="large" type="danger">商品评论</van-button>
+        <van-button plain size="large" @click="rcmdHandle" type="info">图文介绍</van-button>
+        <van-button plain size="large" @click="cmtHandle" type="danger">商品评论</van-button>
       </div>
     </div>
   </div>
@@ -84,6 +84,12 @@ export default {
           Toast('载入商品详情失败')
         }
       })
+    },
+    rcmdHandle () {
+      this.$router.push({ path: '/goodsrecommend/' + this.id })
+    },
+    cmtHandle () {
+      this.$router.push({ path: '/goodscmt/' + this.id })
     }
   },
   components: {
