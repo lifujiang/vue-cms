@@ -67,6 +67,7 @@ export default {
       goodsDetailList: [],
       value: 1,
       ballFlag: false,
+      // 子组件内定义获取到的父组件传的值
       i: this.index
     }
   },
@@ -75,6 +76,8 @@ export default {
     this.getGoodsDetail()
   },
   methods: {
+
+    // 获取轮播图
     getGoodsSwiper () {
       this.$http.get('getGoodsSwiper', { params: { id: this.id } }).then(res => {
         if (res.body.status === 0) {
@@ -84,6 +87,8 @@ export default {
         }
       })
     },
+
+    // 获取商品信息
     getGoodsDetail () {
       this.$http.get('getGoodsDetail', { params: { id: this.id } }).then(res => {
         if (res.body.status === 0) {
@@ -93,24 +98,32 @@ export default {
         }
       })
     },
+
+    // 评论和图文详情编程式路由
     rcmdHandle () {
       this.$router.push({ path: '/goodsrecommend/' + this.id })
     },
     cmtHandle () {
       this.$router.push({ path: '/goodscmt/' + this.id })
     },
+
     // 添加购物车按钮事件
     addToCart () {
       this.ballFlag = !this.ballFlag
       this.i += this.value
+      // 通过调用 $emit 方法向父组件传值
       this.$emit('addToCart', this.i)
       this.value = 1
     },
+
+    // 动画钩子函数
     beforeEnter (el) {
       el.style.transform = "translate(0, 0)"
       el.style.opacity = 1
     },
     enter (el, done) {
+      // getBoundingClientRect 方法获取元素与页面的位置关系
+      // 得到小球的起点与终点位置关系
       var ball = this.$refs.ball.getBoundingClientRect()
       var badge = document.getElementById('badge').getBoundingClientRect()
       el.offsetWidth

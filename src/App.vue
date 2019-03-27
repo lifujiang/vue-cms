@@ -8,6 +8,8 @@
 
     <!-- 中间路由控制区域 -->
     <transition>
+      <!-- 渲染路由子组件页面 -->
+      <!-- 使用 v-on 和 v-bind 实现父子组件数据双向绑定 -->
       <router-view :index="index" @addToCart="cartBadge"></router-view>
     </transition>
     <!-- 底部 -->
@@ -62,6 +64,7 @@ export default {
       }
       this.hidden = true
     },
+    // 处理双向绑定的数据
     cartBadge (i) {
       this.index = i
     }
