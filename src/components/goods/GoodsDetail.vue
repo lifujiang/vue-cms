@@ -27,7 +27,7 @@
             <span>购买数量 :&nbsp;</span>
             <van-stepper 
             v-model="value"
-            max="9"
+            :max="goodsDetailList.stock_quantity"
             integer
             />
           </div>
