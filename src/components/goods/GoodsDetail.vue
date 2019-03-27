@@ -147,6 +147,10 @@ export default {
       }
     }
     .info {
+      // 解决垃圾插件导致的相邻组件抖动问题
+      -webkit-transform-style: preserve-3d;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
       .goodsInfo {
         padding: 15px;
         p {
