@@ -8,7 +8,7 @@
 
     <!-- 中间路由控制区域 -->
     <transition>
-      <router-view></router-view>
+      <router-view :index="index" @addToCart="cartBadge"></router-view>
     </transition>
     <!-- 底部 -->
     <nav class="mui-bar mui-bar-tab">
@@ -21,7 +21,7 @@
         <span class="mui-tab-label">会员</span>
       </router-link>
       <router-link class="mui-tab-item" to="/cart">
-        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge">0</span></span>
+        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge" id="badge">{{ index }}</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
       <router-link class="mui-tab-item" to="/search">
@@ -39,7 +39,8 @@ const hiddenList = [ '/home', '/member', '/cart', '/search' ]
 export default {
   data () {
     return {
-      hidden: false
+      hidden: false,
+      index: 0
     }
   },
   watch: {
@@ -60,6 +61,9 @@ export default {
         }
       }
       this.hidden = true
+    },
+    cartBadge (i) {
+      this.index = i
     }
   }
 }

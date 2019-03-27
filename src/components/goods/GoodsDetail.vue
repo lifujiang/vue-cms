@@ -1,5 +1,11 @@
 <template>
   <div class="goodsDetailPage">
+    <transition 
+    @before-enter="beforeEnter"
+    @enter="enter"
+    @after-enter="afterEnter">
+      <div class="ball" v-show="ballFlag" ref="ball"></div>
+    </transition>
     <!-- 轮播图 -->
     <div class="mui-card">
       <div class="mui-card-content">
@@ -27,7 +33,7 @@
           </div>
           <div class="btn">
             <van-button type="info">立即购买</van-button>
-            <van-button type="danger">加入购物车</van-button>
+            <van-button type="danger" @click="addToCart">加入购物车</van-button>
           </div>
         </div>
       </div>
@@ -54,12 +60,14 @@
 import swiper from '../subcomponents/swiper.vue'
 import { Toast } from 'mint-ui'
 export default {
-  props: ['id'],
+  props: ['id', 'index'],
   data () {
     return {
       goodsSwiperList: [],
       goodsDetailList: [],
-      value: 1
+      value: 1,
+      ballFlag: false,
+      i: this.index
     }
   },
   created () {
@@ -90,6 +98,28 @@ export default {
     },
     cmtHandle () {
       this.$router.push({ path: '/goodscmt/' + this.id })
+    },
+    // 添加购物车按钮事件
+    addToCart () {
+      this.ballFlag = !this.ballFlag
+      this.i += this.value
+      this.$emit('addToCart', this.i)
+      this.value = 1
+    },
+    beforeEnter (el) {
+      el.style.transform = "translate(0, 0)"
+      el.style.opacity = 1
+    },
+    enter (el, done) {
+      var ball = this.$refs.ball.getBoundingClientRect()
+      var badge = document.getElementById('badge').getBoundingClientRect()
+      el.offsetWidth
+      el.style.transform = `translate(${badge.left - ball.left}px, ${badge.top - ball.top}px)`
+      el.style.transition = 'transform .3s cubic-bezier(.4,-0.3,1,.69)'
+      done()
+    },
+    afterEnter (el) {
+      this.ballFlag = !this.ballFlag
     }
   },
   components: {
@@ -171,6 +201,16 @@ export default {
           line-height: 44px;
         }
       }
+    }
+    .ball {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      position: absolute;
+      background-color:red;
+      top: 402px;
+      left: 146px;
+      z-index: 99;
     }
   }
 </style>
