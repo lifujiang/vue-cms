@@ -1,38 +1,72 @@
-// 导入vue包
+/* 导入模块 */
+// vue 包
 import Vue from 'vue'
-// 导入 vue-router
+// Vuex 包
+import Vuex from 'vuex'
+// vue-router
 import VueRouter from 'vue-router'
-// 导入 vue-resource
+// vue-resource
 import VueResource from 'vue-resource'
 
-// 导入样式
+// 样式
 import './lib/mui/css/mui.min.css'
 import './lib/mui/css/iconfont.css'
 import 'vant/lib/vant'
 
-// 导入入口文件
+// 入口文件
 import app from './App.vue'
 
-// 导入自己的路由模块文件
+// 自己的路由模块文件
 import router from './router.js'
 
 // 导 mint-ui
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-// 导入 cube, scroller 部分
+// cube, scroller 部分
 import Cube from 'cube-ui'
-// 导入 vue-preview
+// vue-preview
 import VuePreview from 'vue-preview'
-
+// Vant
 import Vant from 'vant'
 import 'vant/lib/index.css'
 
+/* 使用模块 */
+Vue.use(Vuex)
 Vue.use(Vant)
-
 Vue.use(VueResource)
 Vue.use(MintUI)
 Vue.use(Cube)
 Vue.use(VuePreview)
+
+// 声明 Vuex
+var store = new Vuex.Store({
+  state: {
+    totalCount: 0,
+    goods: []
+  },
+  getters: {
+    showCartCount (state) {
+      return state.cartCount
+    }
+  },
+  mutations: {
+    addGoods (state, obj) {
+      state.totalCount += obj.count
+      if (state.goods.length === 0) {
+        state.goods.push(obj)
+        return
+      }
+      for (const i of state.goods) {
+        if (i.id === obj.id) {
+          i.count += obj.count
+          return
+        }
+      }
+      state.goods.push(obj)
+    },
+    subGoods (state) {}
+  }
+})
 
 // 指定 vue-resource 根路径
 Vue.http.options.root = 'http://localhost:3030/'
@@ -45,5 +79,6 @@ Vue.use(VueRouter)
 var vm = new Vue({
   el: '#app',
   render: c => c(app),
-  router // 挂载路由
+  router, // 挂载路由
+  store
 })

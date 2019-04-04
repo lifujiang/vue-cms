@@ -60,7 +60,7 @@
 import swiper from '../subcomponents/swiper.vue'
 import { Toast } from 'mint-ui'
 export default {
-  props: ['id', 'index'],
+  props: ['id'],
   data () {
     return {
       goodsSwiperList: [],
@@ -111,8 +111,10 @@ export default {
     addToCart () {
       this.ballFlag = !this.ballFlag
       this.i += this.value
-      // 通过调用 $emit 方法向父组件传值
-      this.$emit('addToCart', this.i)
+      this.$store.commit('addGoods', {
+        id: this.id,
+        count: this.value
+      })
       this.value = 1
     },
 

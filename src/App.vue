@@ -9,8 +9,7 @@
     <!-- 中间路由控制区域 -->
     <transition>
       <!-- 渲染路由子组件页面 -->
-      <!-- 使用 v-on 和 v-bind 实现父子组件数据双向绑定 -->
-      <router-view :index="index" @addToCart="cartBadge"></router-view>
+      <router-view></router-view>
     </transition>
     <!-- 底部 -->
     <nav class="mui-bar mui-bar-tab">
@@ -23,7 +22,7 @@
         <span class="mui-tab-label">会员</span>
       </router-link>
       <router-link class="mui-tab-item" to="/cart">
-        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge" id="badge">{{ index }}</span></span>
+        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge" id="badge">{{ $store.state.totalCount }}</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
       <router-link class="mui-tab-item" to="/search">
@@ -31,7 +30,6 @@
         <span class="mui-tab-label">搜索</span>
       </router-link>
     </nav>
-
 
   </div>
 </template>
@@ -63,10 +61,6 @@ export default {
         }
       }
       this.hidden = true
-    },
-    // 处理双向绑定的数据
-    cartBadge (i) {
-      this.index = i
     }
   }
 }
