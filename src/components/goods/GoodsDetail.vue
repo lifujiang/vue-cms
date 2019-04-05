@@ -67,8 +67,6 @@ export default {
       goodsDetailList: [],
       value: 1,
       ballFlag: false,
-      // 子组件内定义获取到的父组件传的值
-      i: this.index
     }
   },
   created () {
@@ -109,9 +107,11 @@ export default {
 
     // 添加购物车按钮事件
     addToCart () {
+      // 显示小球
       this.ballFlag = !this.ballFlag
-      this.i += this.value
+      // 给当前商品添加数量 count 属性
       this.goodsDetailList.count = this.value
+      // 使用 commit 方法改变 state
       this.$store.commit('createGoods', this.goodsDetailList)
       this.value = 1
     },

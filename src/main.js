@@ -51,42 +51,54 @@ var store = new Vuex.Store({
     }
   },
   mutations: {
+    // 添加商品到购物车(state)
     createGoods (state, obj) {
       state.totalCount += obj.count
+      // 状态内商品数组是否存在元素, 不存在则直接 push (空数组不能遍历)
       if (state.goods.length === 0) {
         state.goods.push(obj)
         return
       }
+      // 以存在的商品则通过循环添加
       for (const i of state.goods) {
         if (i.id === obj.id) {
           i.count += obj.count
           return
         }
       }
+      // 不存在状态内的商品将 push 进去
       state.goods.push(obj)
     },
-    addGoodsCount (state, { count }) {
-      state.totalCount++
-      count++
+    // 商品增加指定数量
+    addGoodsCount (state, { count, num = 1 }) {
+      state.totalCount += num
+      count += num
     },
+    // 删除商品
     removeGoods (state, item) {
       var goods = state.goods
+      // 找到索引并删除该条数组元素
       var i = goods.findIndex(res => {
         return res.id === item.id
       })
       goods.splice(i, 1)
+      // 重新获取总数
       this.commit('changeGoodsCount')
     },
-    minusGoodsCount (state, { count }) {
-      state.totalCount--
-      count--
+    // 商品减少指定数量
+    minusGoodsCount (state, { count, num = 1 }) {
+      state.totalCount -= num
+      count -= num
     },
+    // 当商品数量改变时重新获取总数
     changeGoodsCount (state) {
-      var totalnum = 0
+      // 临时数值
+      var tempNum = 0
+      // 通过循环重新获取总数
       for (const i of state.goods) {
-        totalnum += i.count
+        tempNum += i.count
       }
-      state.totalCount = totalnum
+      state.totalCount = tempNum
     }
   }
 })
