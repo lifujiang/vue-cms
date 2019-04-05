@@ -1,6 +1,7 @@
 /* 导入模块 */
 // vue 包
 import Vue from 'vue'
+
 // Vuex 包
 import Vuex from 'vuex'
 // vue-router

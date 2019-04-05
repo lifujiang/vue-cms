@@ -7,7 +7,8 @@
     </mt-header>
 
     <!-- 中间路由控制区域 -->
-    <transition>
+    <!-- 使用 out-in 模式可以解决切换出现滚动条的问题 -->
+    <transition mode="out-in">
       <!-- 渲染路由子组件页面 -->
       <router-view></router-view>
     </transition>
@@ -90,7 +91,6 @@ export default {
   .v-leave-to {
     opacity: 0;
     transform: translateX(-100%);
-    position: absolute;
   }
 
   .v-enter-active,
