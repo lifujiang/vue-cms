@@ -25,7 +25,7 @@
           </p>
           <div class="stepper">
             <span>购买数量 :&nbsp;</span>
-            <van-stepper 
+            <van-stepper
             v-model="value"
             :max="goodsDetailList.stock_quantity"
             integer
@@ -111,10 +111,8 @@ export default {
     addToCart () {
       this.ballFlag = !this.ballFlag
       this.i += this.value
-      this.$store.commit('addGoods', {
-        id: this.id,
-        count: this.value
-      })
+      this.goodsDetailList.count = this.value
+      this.$store.commit('createGoods', this.goodsDetailList)
       this.value = 1
     },
 

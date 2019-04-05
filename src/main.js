@@ -50,7 +50,7 @@ var store = new Vuex.Store({
     }
   },
   mutations: {
-    addGoods (state, obj) {
+    createGoods (state, obj) {
       state.totalCount += obj.count
       if (state.goods.length === 0) {
         state.goods.push(obj)
@@ -64,7 +64,29 @@ var store = new Vuex.Store({
       }
       state.goods.push(obj)
     },
-    subGoods (state) {}
+    addGoodsCount (state, { count }) {
+      state.totalCount++
+      count++
+    },
+    removeGoods (state, item) {
+      var goods = state.goods
+      var i = goods.findIndex(res => {
+        return res.id === item.id
+      })
+      goods.splice(i, 1)
+      this.commit('changeGoodsCount')
+    },
+    minusGoodsCount (state, { count }) {
+      state.totalCount--
+      count--
+    },
+    changeGoodsCount (state) {
+      var totalnum = 0
+      for (const i of state.goods) {
+        totalnum += i.count
+      }
+      state.totalCount = totalnum
+    }
   }
 })
 
