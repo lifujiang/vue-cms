@@ -17,7 +17,7 @@
       <van-checkbox v-model="checked">全选</van-checkbox>
       <div class="info">
         <span>合计: </span>
-        <span class="price">&yen;30.50</span>
+        <span class="price">&yen;{{ totalPrice }}</span>
         <van-button square type="danger">结算</van-button>
       </div>
     </div>
@@ -56,6 +56,11 @@ export default {
   },
   watch: {
     '$route': 'isHidden'
+  },
+  computed: {
+    totalPrice () {
+      return this.$store.getters.totalPrice
+    }
   },
   created () {
     this.isHidden()

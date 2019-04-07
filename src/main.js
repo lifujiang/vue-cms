@@ -53,8 +53,8 @@ var store = new Vuex.Store({
       })
       return total
     },
-    getRemainStock: (state) => (id) => {
-      state.goods.map(item => {
+    isFull: (state) => (id) => {
+      state.goods.some(item => {
         if (item.id === parseInt(id)) {
           if (item.remain_stock <= 0) {
             return true
@@ -62,6 +62,20 @@ var store = new Vuex.Store({
           return false
         }
       })
+    },
+    totalPrice (state) {
+      var totalPrice = 0
+      state.goods.forEach(item => {
+        if (item.selected) totalPrice += (item.sale_price * item.count)
+      })
+      return totalPrice
+    },
+    selectedList (state) {
+      var idList = []
+      state.goods.forEach(item => {
+        if (item.selected) idList.push(item.id)
+      })
+      return idList
     }
   },
   mutations: {
@@ -102,6 +116,14 @@ var store = new Vuex.Store({
           item.count = obj.count
           item.remain_stock = item.stock_quantity - obj.count
           return true
+        }
+      })
+    },
+    //
+    totalNum (state, obj) {
+      state.goods.some(item => {
+        if (item.id === parseInt(obj.id)) {
+          item.selected = obj.selected
         }
       })
     }

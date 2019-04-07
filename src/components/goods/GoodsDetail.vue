@@ -76,7 +76,7 @@ export default {
   computed: {
     // 判断添加购物车数量是否大于已添加量
     isFull () {
-      return this.$store.getters.getRemainStock(this.goodsDetailList.id)
+      return this.$store.getters.isFull(this.goodsDetailList.id)
     }
   },
   methods: {

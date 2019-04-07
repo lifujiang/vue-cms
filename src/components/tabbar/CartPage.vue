@@ -1,8 +1,8 @@
 <template>
     <div class="cartPage">
-      <!-- 复选框组的 checked 状态保存在 result 数组里 -->
-      <van-checkbox-group v-model="result" class="cards">
-        <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id">
+      <!-- 复选框组的 checked 状态保存在 idList 数组里 -->
+      <van-checkbox-group v-model="idList" class="cards">
+        <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id" @click="selectGoods(item)">
           <!-- 这里的商品卡片是包含在复选框内的, 所以需要阻止默认冒泡 -->
           <van-card
           @click="stopMaoPao"
@@ -10,7 +10,6 @@
           :title="item.title"
           :thumb="item.src"
           >
-          <!-- 垃圾组件库导致自定义类权重不够高, 需使用id选择器, 以后换组件库时需要修改 -->
           <div class="stepper" slot="footer">
               <van-stepper
               v-model="item.count"
@@ -31,13 +30,19 @@
 export default {
     data () {
         return {
-          result: []
+          idList: []
         }
     },
     computed: {
         goodsList () {
           return this.$store.state.goods
+        },
+        selectedList () {
+          return this.$store.getters.selectedList
         }
+    },
+    created () {
+      this.idList = this.selectedList
     },
     methods: {
       // 以下事件均通过 vuex 的 commit 方法设置 state
@@ -52,6 +57,24 @@ export default {
       // 阻止卡片冒泡
       stopMaoPao(e) {
         e.stopPropagation()
+      },
+      selectGoods (item) {
+        var flag = false
+        this.idList.some(i => {
+          if (i === parseInt(item.id)) {
+            item.selected = true
+            flag = true
+            return true
+          }
+        })
+        if (!flag) item.selected = false
+        console.log(item)
+        console.log(this.idList)
+        var obj = {
+          id: item.id,
+          selected: item.selected
+        }
+        this.$store.commit('totalNum', obj)
       }
     }
 }
