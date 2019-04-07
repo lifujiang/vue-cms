@@ -11,11 +11,10 @@
             <div id="stepper" slot="footer">
                 <van-stepper
                 v-model="item.count"
+                min=1
                 :max="item.stock_quantity"
                 integer
-                @plus="plus(item.count)"
-                @minus="minus(item.count)"
-                @change="change"
+                @change="change(item)"
                 />
                 <van-button @click="del(item)" class="del" size="normal">删除</van-button>
             </div>
@@ -38,17 +37,9 @@ export default {
     },
     methods: {
       // 以下事件均通过 vuex 的 commit 方法设置 state
-      // '+' 按钮
-      plus (count) {
-        this.$store.commit('addGoodsCount', { count })
-      },
-      // '-' 按钮
-      minus (count) {
-        this.$store.commit('minusGoodsCount', { count })
-      },
-      // 手动输入数值
-      change (count) {
-        this.$store.commit('changeGoodsCount')
+      // 改变数值的 mutation
+      change (obj) {
+        this.$store.commit('changeGoodsCount', obj)
       },
       // 删除按钮
       del (item) {

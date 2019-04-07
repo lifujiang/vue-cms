@@ -73,8 +73,12 @@ export default {
     this.getGoodsSwiper()
     this.getGoodsDetail()
   },
+  computed: {
+    isFull () {
+      return this.$store.getters.getRemainStock(this.goodsDetailList.id)
+    }
+  },
   methods: {
-
     // 获取轮播图
     getGoodsSwiper () {
       this.$http.get('getGoodsSwiper', { params: { id: this.id } }).then(res => {
@@ -110,10 +114,23 @@ export default {
       // 显示小球
       this.ballFlag = !this.ballFlag
       // 给当前商品添加数量 count 属性
-      this.goodsDetailList.count = this.value
+      var goodsDetailList = this.goodsDetailList
+      // 获取当前商品数据
+      var cartObj = {
+        id: goodsDetailList.id,
+        count: this.value,
+        stock_quantity: goodsDetailList.stock_quantity,
+        selected: false,
+        remain_stock: goodsDetailList.stock_quantity,
+        sale_price: goodsDetailList.sale_price,
+        title: goodsDetailList.title,
+        src: goodsDetailList.src
+      }
       // 使用 commit 方法改变 state
-      this.$store.commit('createGoods', this.goodsDetailList)
-      this.value = 1
+      this.$store.commit('createGoods', cartObj)
+      if (this.$store.state.isFull) {
+        Toast('商品已被掏空(｀・ω・´)')
+      }
     },
 
     // 动画钩子函数

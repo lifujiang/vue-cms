@@ -23,7 +23,7 @@
         <span class="mui-tab-label">会员</span>
       </router-link>
       <router-link class="mui-tab-item" to="/cart">
-        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge" id="badge">{{ $store.state.totalCount }}</span></span>
+        <span class="mui-icon iconfont icon-gouwuche"><span class="mui-badge" id="badge">{{ $store.getters.showCartCount }}</span></span>
         <span class="mui-tab-label">购物车</span>
       </router-link>
       <router-link class="mui-tab-item" to="/search">

@@ -42,63 +42,68 @@ Vue.use(VuePreview)
 // 声明 Vuex
 var store = new Vuex.Store({
   state: {
-    totalCount: 0,
-    goods: []
+    goods: [],
+    isFull: false
   },
   getters: {
     showCartCount (state) {
-      return state.cartCount
+      var total = 0
+      state.goods.forEach(item => {
+        total += item.count
+      })
+      return total
+    },
+    getRemainStock: (state) => (id) => {
+      state.goods.map(item => {
+        if (item.id === parseInt(id)) {
+          if (item.remain_stock <= 0) {
+            return true
+          }
+          return false
+        }
+      })
     }
   },
   mutations: {
     // 添加商品到购物车(state)
     createGoods (state, obj) {
-      state.totalCount += obj.count
-      // 状态内商品数组是否存在元素, 不存在则直接 push (空数组不能遍历)
-      if (state.goods.length === 0) {
-        state.goods.push(obj)
-        return
-      }
       // 以存在的商品则通过循环添加
-      for (const i of state.goods) {
-        if (i.id === obj.id) {
-          i.count += obj.count
-          return
+      var flag = false
+      state.goods.some(item => {
+        if (item.id === parseInt(obj.id)) {
+          flag = true
+          if (item.remain_stock - obj.count < 0) {
+            state.isFull = true
+            return true
+          }
+          state.isFull = false
+          item.remain_stock -= obj.count
+          item.count += obj.count
+          return true
         }
-      }
+      })
       // 不存在状态内的商品将 push 进去
-      state.goods.push(obj)
-    },
-    // 商品增加指定数量
-    addGoodsCount (state, { count, num = 1 }) {
-      state.totalCount += num
-      count += num
+      if (!flag) {
+        obj.remain_stock -= obj.count
+        state.goods.push(obj)
+      }
     },
     // 删除商品
-    removeGoods (state, item) {
-      var goods = state.goods
-      // 找到索引并删除该条数组元素
-      var i = goods.findIndex(res => {
-        return res.id === item.id
+    removeGoods (state, obj) {
+      var i = state.goods.findIndex(item => {
+        return item.id === parseInt(obj.id)
       })
-      goods.splice(i, 1)
-      // 重新获取总数
-      this.commit('changeGoodsCount')
+      state.goods.splice(i, 1)
     },
-    // 商品减少指定数量
-    minusGoodsCount (state, { count, num = 1 }) {
-      state.totalCount -= num
-      count -= num
-    },
-    // 当商品数量改变时重新获取总数
-    changeGoodsCount (state) {
-      // 临时数值
-      var tempNum = 0
-      // 通过循环重新获取总数
-      for (const i of state.goods) {
-        tempNum += i.count
-      }
-      state.totalCount = tempNum
+    // 获取输入商品数量
+    changeGoodsCount (state, obj) {
+      state.goods.some(item => {
+        if (item.id === parseInt(obj.id)) {
+          item.count = obj.count
+          item.remain_stock = item.stock_quantity - obj.count
+          return true
+        }
+      })
     }
   }
 })
