@@ -3,7 +3,7 @@
 
     <!-- 顶部 -->
     <mt-header fixed title="固定在顶部">
-        <mt-button icon="back" slot="left" @click="goBack" v-if="hidden">返回</mt-button>
+        <mt-button icon="back" slot="left" @click="goBack" v-if="hiddenBack">返回</mt-button>
     </mt-header>
 
     <!-- 中间路由控制区域 -->
@@ -13,6 +13,14 @@
       <router-view></router-view>
     </transition>
     <!-- 底部 -->
+    <div class="jiesuan" v-if="showJiesuan">
+      <van-checkbox v-model="checked">全选</van-checkbox>
+      <div class="info">
+        <span>合计: </span>
+        <span class="price">&yen;30.50</span>
+        <van-button square type="danger">结算</van-button>
+      </div>
+    </div>
     <nav class="mui-bar mui-bar-tab">
       <router-link class="mui-tab-item" to="/home">
         <span class="mui-icon mui-icon-home"></span>
@@ -40,8 +48,10 @@ const hiddenList = [ '/home', '/member', '/cart', '/search' ]
 export default {
   data () {
     return {
-      hidden: false,
-      index: 0
+      hiddenBack: false,
+      showJiesuan: false,
+      index: 0,
+      checked: false
     }
   },
   watch: {
@@ -55,13 +65,16 @@ export default {
       this.$router.go(-1)
     },
     isHidden () {
+      this.showJiesuan = false
+      if (this.$route.path === '/cart') this.showJiesuan = true
       for (var item of hiddenList) {
         if (this.$route.path === item) {
-          this.hidden = false
+          this.hiddenBack = false
           return
         }
       }
-      this.hidden = true
+      this.hiddenBack = true
+      
     }
   }
 }
@@ -72,14 +85,46 @@ export default {
 /* 顶部 */
   .app-container{
     /* 加padding的目的是因为顶部是浮动的, 会覆盖内容 */
+    position: relative;
     padding-top: 40px;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
     overflow-x: hidden;
     // 文字内容自动换行
     white-space:normal;  
     word-break:break-all;  
     .mint-header.is-fixed {
       z-index: 99;
+    }
+    .jiesuan {
+      // 解决垃圾插件导致的相邻组件抖动问题
+      -webkit-transform-style: preserve-3d;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      // 样式
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      position: fixed;
+      bottom: 50px;
+      height: 50px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      line-height: 50px;
+      z-index: 1000;
+      .van-checkbox {
+        margin-left: 10px;
+      }
+      .info {
+        .price {
+          font-size: 21px;
+          color: rgb(252, 116, 6);
+        }
+        .van-button {
+          font-size: 18px;
+          width: 110px;
+          height: 50px;
+        }
+      }
     }
   }
 

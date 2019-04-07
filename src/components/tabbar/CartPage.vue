@@ -1,30 +1,29 @@
 <template>
     <div class="cartPage">
       <!-- 复选框组的 checked 状态保存在 result 数组里 -->
-        <van-checkbox-group v-model="result" class="cards">
-            <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id">
-              <!-- 这里的商品卡片是包含在复选框内的, 所以需要阻止默认冒泡 -->
-              <van-card
-              @click="stopMaoPao"
-              :price="item.sale_price"
-              :title="item.title"
-              :thumb="item.src"
-              >
-              <!-- 垃圾组件库导致自定义类权重不够高, 需使用id选择器, 以后换组件库时需要修改 -->
-              <div class="stepper" slot="footer">
-                  <van-stepper
-                  v-model="item.count"
-                  min=1
-                  :max="item.stock_quantity"
-                  integer
-                  @change="change(item)"
-                  />
-                  <van-button @click="del(item)" class="del" size="normal">删除</van-button>
-              </div>
-              </van-card>
-            </van-checkbox>
-            
-        </van-checkbox-group>
+      <van-checkbox-group v-model="result" class="cards">
+        <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id">
+          <!-- 这里的商品卡片是包含在复选框内的, 所以需要阻止默认冒泡 -->
+          <van-card
+          @click="stopMaoPao"
+          :price="item.sale_price"
+          :title="item.title"
+          :thumb="item.src"
+          >
+          <!-- 垃圾组件库导致自定义类权重不够高, 需使用id选择器, 以后换组件库时需要修改 -->
+          <div class="stepper" slot="footer">
+              <van-stepper
+              v-model="item.count"
+              min=1
+              :max="item.stock_quantity"
+              integer
+              @change="change(item)"
+              />
+              <van-button @click="del(item)" class="del" size="normal">删除</van-button>
+          </div>
+          </van-card>
+        </van-checkbox>
+      </van-checkbox-group>
     </div>
 </template>
 
@@ -70,7 +69,7 @@ export default {
       // --------------复选框
       .van-checkbox {
         // 每一张商品卡片被包含在一个复选框内, 所以需要设置复选框为卡片的样子
-        margin: 10px 0;
+        margin: 20px 0;
         box-shadow: 2px 2px 5px #ccc;
         background-color:#fafafa;
         display: block;
