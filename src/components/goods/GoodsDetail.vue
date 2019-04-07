@@ -74,6 +74,7 @@ export default {
     this.getGoodsDetail()
   },
   computed: {
+    // 判断添加购物车数量是否大于已添加量
     isFull () {
       return this.$store.getters.getRemainStock(this.goodsDetailList.id)
     }
@@ -128,6 +129,7 @@ export default {
       }
       // 使用 commit 方法改变 state
       this.$store.commit('createGoods', cartObj)
+      // 商品购买上限在 mutaitions 提前处理, 这里只需要完成超过购买上限的提示
       if (this.$store.state.isFull) {
         Toast('商品已被掏空(｀・ω・´)')
       }
