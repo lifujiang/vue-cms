@@ -1,5 +1,5 @@
 <template>
-    <div class="cartPage">
+    <div class="cartPage" ref="cart">
       <!-- 复选框组的 checked 状态保存在 idList 数组里 -->
       <van-checkbox-group v-model="idList" class="cards">
         <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id" @click="selectGoods(item)">
@@ -23,6 +23,14 @@
           </van-card>
         </van-checkbox>
       </van-checkbox-group>
+      <div class="jiesuan" ref="jiesuanBar">
+        <van-checkbox v-model="checked">全选</van-checkbox>
+        <div class="info">
+          <span>合计: </span>
+          <span class="price">&yen;{{ totalPrice }}</span>
+          <van-button square type="danger">结算</van-button>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -30,7 +38,8 @@
 export default {
     data () {
         return {
-          idList: []
+          idList: [],
+          checked: false
         }
     },
     computed: {
@@ -39,10 +48,16 @@ export default {
         },
         selectedList () {
           return this.$store.getters.selectedList
+        },
+        totalPrice () {
+          return this.$store.getters.totalPrice
         }
     },
     created () {
       this.idList = this.selectedList
+    },
+    mounted () {
+
     },
     methods: {
       // 以下事件均通过 vuex 的 commit 方法设置 state
@@ -80,7 +95,7 @@ export default {
 }
 </script>
 
-<style lang="less" >
+<style lang="less">
   .cartPage {
     position: relative;
     width: 100%;
@@ -162,6 +177,34 @@ export default {
           }
         }
       } 
+    }
+    .jiesuan {
+      // 样式
+      background-color: #fff;
+      border-top: 1px solid #ddd;
+      position: fixed;
+      bottom: 50px;
+      left: 0;
+      height: 50px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      line-height: 50px;
+      z-index: 1000;
+      .van-checkbox {
+        margin-left: 10px;
+      }
+      .info {
+        .price {
+          font-size: 21px;
+          color: rgb(252, 116, 6);
+        }
+        .van-button {
+          font-size: 18px;
+          width: 110px;
+          height: 50px;
+        }
+      }
     }
   }
 </style>

@@ -3,7 +3,8 @@
     <transition 
     @before-enter="beforeEnter"
     @enter="enter"
-    @after-enter="afterEnter">
+    @after-enter="afterEnter"
+    mode="in-out">
       <div class="ball" v-show="ballFlag" ref="ball"></div>
     </transition>
     <!-- 轮播图 -->

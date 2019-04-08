@@ -3,24 +3,23 @@
 
     <!-- 顶部 -->
     <mt-header fixed title="固定在顶部">
-        <mt-button icon="back" slot="left" @click="goBack" v-if="hiddenBack">返回</mt-button>
+        <mt-button icon="back" slot="left" @click="goBack" v-if="!isIndexPage">返回</mt-button>
     </mt-header>
 
     <!-- 中间路由控制区域 -->
     <!-- 使用 out-in 模式可以解决切换出现滚动条的问题 -->
-    <transition mode="out-in">
+    <transition mode="out-in"
+    @before-leave="beforeLeave"
+    @before-enter="beforeEnter"
+    @after-leave="afterLeave"
+    @enter="enter"
+    @after-enter="afterEnter"
+    @leave="leave"
+    >
       <!-- 渲染路由子组件页面 -->
       <router-view></router-view>
     </transition>
     <!-- 底部 -->
-    <div class="jiesuan" v-if="showJiesuan">
-      <van-checkbox v-model="checked">全选</van-checkbox>
-      <div class="info">
-        <span>合计: </span>
-        <span class="price">&yen;{{ totalPrice }}</span>
-        <van-button square type="danger">结算</van-button>
-      </div>
-    </div>
     <nav class="mui-bar mui-bar-tab">
       <router-link class="mui-tab-item" to="/home">
         <span class="mui-icon mui-icon-home"></span>
@@ -48,19 +47,15 @@ const hiddenList = [ '/home', '/member', '/cart', '/search' ]
 export default {
   data () {
     return {
-      hiddenBack: false,
-      showJiesuan: false,
-      index: 0,
-      checked: false
+      isIndexPage: true,
+      index: 0
     }
   },
   watch: {
     '$route': 'isHidden'
   },
   computed: {
-    totalPrice () {
-      return this.$store.getters.totalPrice
-    }
+    
   },
   created () {
     this.isHidden()
@@ -70,16 +65,40 @@ export default {
       this.$router.go(-1)
     },
     isHidden () {
-      this.showJiesuan = false
-      if (this.$route.path === '/cart') this.showJiesuan = true
       for (var item of hiddenList) {
         if (this.$route.path === item) {
-          this.hiddenBack = false
+          this.isIndexPage = true
           return
         }
       }
-      this.hiddenBack = true
-      
+      this.isIndexPage = false
+    },
+    beforeEnter (el) {
+      el.style.opacity = 0
+    },
+    enter (el, done) {
+      if (!this.isIndexPage) el.style.transform = 'translateX(100%)'
+      el.offsetWidth
+      el.style.position = 'relative'
+      el.style.transition = 'all .5s ease'
+      done()
+    },
+    afterEnter (el) {
+      if (!this.isIndexPage) el.style.transform = 'translateX(0%)'     
+      el.style.opacity = 1
+    },
+    beforeLeave (el) {
+      el.style.opacity = 0
+    },
+    leave (el, done) {
+      if (!this.isIndexPage) el.style.transform = 'translateX(-100%)'
+      el.offsetWidth
+      el.style.transition = 'all .5s ease'
+      done()
+    },
+    afterLeave (el) {
+      if (!this.isIndexPage) el.style.transform = 'translateX(0%)'
+      el.style.opacity = 1
     }
   }
 }
@@ -100,51 +119,6 @@ export default {
     .mint-header.is-fixed {
       z-index: 99;
     }
-    .jiesuan {
-      // 解决垃圾插件导致的相邻组件抖动问题
-      -webkit-transform-style: preserve-3d;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
-      // 样式
-      background-color: #fff;
-      border-top: 1px solid #ddd;
-      position: fixed;
-      bottom: 50px;
-      height: 50px;
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      line-height: 50px;
-      z-index: 1000;
-      .van-checkbox {
-        margin-left: 10px;
-      }
-      .info {
-        .price {
-          font-size: 21px;
-          color: rgb(252, 116, 6);
-        }
-        .van-button {
-          font-size: 18px;
-          width: 110px;
-          height: 50px;
-        }
-      }
-    }
   }
 
-  .v-enter {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-
-  .v-leave-to {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-
-  .v-enter-active,
-  .v-leave-active {
-    transition: all .5s ease;
-  }
 </style>
