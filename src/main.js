@@ -43,7 +43,9 @@ Vue.use(VuePreview)
 var store = new Vuex.Store({
   state: {
     goods: [],
-    isFull: false
+    isFull: false,
+    idList: [],
+    checkedAll: false
   },
   getters: {
     showCartCount (state) {
@@ -69,13 +71,6 @@ var store = new Vuex.Store({
         if (item.selected) totalPrice += (item.sale_price * item.count)
       })
       return totalPrice
-    },
-    selectedList (state) {
-      var idList = []
-      state.goods.forEach(item => {
-        if (item.selected) idList.push(item.id)
-      })
-      return idList
     }
   },
   mutations: {
@@ -119,11 +114,31 @@ var store = new Vuex.Store({
         }
       })
     },
-    //
-    totalNum (state, obj) {
+    // 更新商品的选中状态
+    selectGoods (state, obj) {
       state.goods.some(item => {
         if (item.id === parseInt(obj.id)) {
           item.selected = obj.selected
+        }
+      })
+    },
+    // 更新所有商品的选中状态
+    selectedAll (state, checked) {
+      state.idList = []
+      state.goods.forEach(item => {
+        item.selected = checked
+        if (checked) state.idList.push(item.id)
+      })
+      state.checkedAll = checked
+    },
+    selectedList (state, idList) {
+      state.idList = idList
+    },
+    isAllSelected (state) {
+      state.checkedAll = true
+      state.goods.some(item => {
+        if (!item.selected) {
+          state.checkedAll = false
         }
       })
     }

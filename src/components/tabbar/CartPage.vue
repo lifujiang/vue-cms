@@ -1,6 +1,6 @@
 <template>
     <div class="cartPage" ref="cart">
-      <!-- 复选框组的 checked 状态保存在 idList 数组里 -->
+      <!-- 复选框组的 isAllSelectedAll 状态保存在 idList 数组里 -->
       <van-checkbox-group v-model="idList" class="cards">
         <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id" @click="selectGoods(item)">
           <!-- 这里的商品卡片是包含在复选框内的, 所以需要阻止默认冒泡 -->
@@ -24,7 +24,7 @@
         </van-checkbox>
       </van-checkbox-group>
       <div class="jiesuan" ref="jiesuanBar">
-        <van-checkbox v-model="checked">全选</van-checkbox>
+        <van-checkbox v-model="checkedAll" @click="selectedAll">全选</van-checkbox>
         <div class="info">
           <span>合计: </span>
           <span class="price">&yen;{{ totalPrice }}</span>
@@ -39,25 +39,22 @@ export default {
     data () {
         return {
           idList: [],
-          checked: false
+          checkedAll: false
         }
     },
     computed: {
         goodsList () {
           return this.$store.state.goods
         },
-        selectedList () {
-          return this.$store.getters.selectedList
-        },
         totalPrice () {
           return this.$store.getters.totalPrice
         }
     },
     created () {
-      this.idList = this.selectedList
+      this.idList = this.$store.state.idList
+      this.checkedAll = this.$store.state.checkedAll
     },
     mounted () {
-
     },
     methods: {
       // 以下事件均通过 vuex 的 commit 方法设置 state
@@ -83,13 +80,20 @@ export default {
           }
         })
         if (!flag) item.selected = false
-        console.log(item)
-        console.log(this.idList)
         var obj = {
           id: item.id,
           selected: item.selected
         }
-        this.$store.commit('totalNum', obj)
+        this.$store.commit('selectGoods', obj)
+        this.$store.commit('selectedList', this.idList)
+        this.$store.commit('isAllSelected')
+        this.checkedAll = this.$store.state.checkedAll
+      },
+      selectedAll () {
+        this.$store.commit('selectedAll', this.checkedAll)
+        console.log(this.checkedAll)
+        this.idList = this.$store.state.idList
+        console.log(this.idList)
       }
     }
 }
