@@ -77,6 +77,7 @@ var store = new Vuex.Store({
     // 添加商品到购物车(state)
     createGoods (state, obj) {
       // 以存在的商品则通过循环添加
+      state.checkedAll = false
       var flag = false
       state.goods.some(item => {
         if (item.id === parseInt(obj.id)) {
@@ -104,8 +105,7 @@ var store = new Vuex.Store({
       })
       state.goods.splice(i, 1)
     },
-    // 获取输入商品数量
-    changeGoodsCount (state, obj) {
+    updateGoodsCount (state, obj) {
       state.goods.some(item => {
         if (item.id === parseInt(obj.id)) {
           item.count = obj.count
@@ -114,32 +114,19 @@ var store = new Vuex.Store({
         }
       })
     },
-    // 更新商品的选中状态
-    selectGoods (state, obj) {
-      state.goods.some(item => {
-        if (item.id === parseInt(obj.id)) {
-          item.selected = obj.selected
-        }
-      })
+    updateIdList (state, idList) {
+      state.idList = idList
+      if (state.idList.length === state.goods.length && state.goods.length !== 0) {
+        state.checkedAll = true
+        return
+      }
+      state.checkedAll = false
     },
-    // 更新所有商品的选中状态
-    selectedAll (state, checked) {
+    updateCheckedAll (state, checkedAll) {
+      state.checkedAll = checkedAll
       state.idList = []
       state.goods.forEach(item => {
-        item.selected = checked
-        if (checked) state.idList.push(item.id)
-      })
-      state.checkedAll = checked
-    },
-    selectedList (state, idList) {
-      state.idList = idList
-    },
-    isAllSelected (state) {
-      state.checkedAll = true
-      state.goods.some(item => {
-        if (!item.selected) {
-          state.checkedAll = false
-        }
+        if (checkedAll) state.idList.push(item.id)
       })
     }
   }

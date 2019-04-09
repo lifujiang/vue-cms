@@ -2,7 +2,7 @@
     <div class="cartPage" ref="cart">
       <!-- 复选框组的 isAllSelectedAll 状态保存在 idList 数组里 -->
       <van-checkbox-group v-model="idList" class="cards">
-        <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id" @click="selectGoods(item)">
+        <van-checkbox v-for="item of goodsList" :name="item.id" :key="item.id" >
           <!-- 这里的商品卡片是包含在复选框内的, 所以需要阻止默认冒泡 -->
           <van-card
           @click="stopMaoPao"
@@ -24,7 +24,7 @@
         </van-checkbox>
       </van-checkbox-group>
       <div class="jiesuan" ref="jiesuanBar">
-        <van-checkbox v-model="checkedAll" @click="selectedAll">全选</van-checkbox>
+        <van-checkbox v-model="checkedAll">全选</van-checkbox>
         <div class="info">
           <span>合计: </span>
           <span class="price">&yen;{{ totalPrice }}</span>
@@ -36,64 +36,54 @@
 
 <script>
 export default {
-    data () {
-        return {
-          idList: [],
-          checkedAll: false
-        }
+  data () {
+      return {
+      }
+  },
+  computed: {
+    goodsList () {
+      return this.$store.state.goods
     },
-    computed: {
-        goodsList () {
-          return this.$store.state.goods
-        },
-        totalPrice () {
-          return this.$store.getters.totalPrice
-        }
+    totalPrice () {
+      return this.$store.getters.totalPrice
     },
-    created () {
-      this.idList = this.$store.state.idList
-      this.checkedAll = this.$store.state.checkedAll
+    idList: {
+      get () {
+        return this.$store.state.idList
+      },
+      set (value) {
+        this.$store.commit('updateIdList', value)
+      }
     },
-    mounted () {
-    },
-    methods: {
-      // 以下事件均通过 vuex 的 commit 方法设置 state
-      // 改变数值的 mutation
-      change (obj) {
-        this.$store.commit('changeGoodsCount', obj)
+    checkedAll: {
+      get () {
+        return this.$store.state.checkedAll
       },
-      // 删除按钮
-      del (item) {
-        this.$store.commit('removeGoods', item)
-      },
-      // 阻止卡片冒泡
-      stopMaoPao(e) {
-        e.stopPropagation()
-      },
-      selectGoods (item) {
-        var flag = false
-        this.idList.some(i => {
-          if (i === parseInt(item.id)) {
-            item.selected = true
-            flag = true
-            return true
-          }
-        })
-        if (!flag) item.selected = false
-        var obj = {
-          id: item.id,
-          selected: item.selected
-        }
-        this.$store.commit('selectGoods', obj)
-        this.$store.commit('selectedList', this.idList)
-        this.$store.commit('isAllSelected')
-        this.checkedAll = this.$store.state.checkedAll
-      },
-      selectedAll () {
-        this.$store.commit('selectedAll', this.checkedAll)
-        this.idList = this.$store.state.idList
+      set (value) {
+        this.$store.commit('updateCheckedAll', value)
       }
     }
+  },
+  created () {
+    
+  },
+  mounted () {
+  },
+  methods: {
+    // 以下事件均通过 vuex 的 commit 方法设置 state
+    // 改变数值的 mutation
+    change (obj) {
+      this.$store.commit('updateGoodsCount', obj)
+    },
+    // 删除按钮
+    del (item) {
+      this.$store.commit('removeGoods', item)
+    },
+    // 阻止卡片冒泡
+    stopMaoPao(e) {
+      e.stopPropagation()
+    }
+  }
 }
 </script>
 

@@ -113,8 +113,6 @@ export default {
 
     // 添加购物车按钮事件
     addToCart () {
-      // 显示小球
-      this.ballFlag = !this.ballFlag
       // 给当前商品添加数量 count 属性
       var goodsDetailList = this.goodsDetailList
       // 获取当前商品数据
@@ -130,11 +128,12 @@ export default {
       }
       // 使用 commit 方法改变 state
       this.$store.commit('createGoods', cartObj)
-      this.$store.commit('isAllSelected')
       // 商品购买上限在 mutaitions 提前处理, 这里只需要完成超过购买上限的提示
       if (this.$store.state.isFull) {
-        Toast('库存已被掏空(｀・ω・´)')
+        return Toast('库存已被掏空(｀・ω・´)')
       }
+      // 显示小球
+      this.ballFlag = !this.ballFlag
     },
 
     // 动画钩子函数
