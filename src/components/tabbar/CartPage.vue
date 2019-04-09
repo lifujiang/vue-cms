@@ -91,9 +91,7 @@ export default {
       },
       selectedAll () {
         this.$store.commit('selectedAll', this.checkedAll)
-        console.log(this.checkedAll)
         this.idList = this.$store.state.idList
-        console.log(this.idList)
       }
     }
 }
