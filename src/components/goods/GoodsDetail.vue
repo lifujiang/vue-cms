@@ -133,7 +133,7 @@ export default {
       this.$store.commit('isAllSelected')
       // 商品购买上限在 mutaitions 提前处理, 这里只需要完成超过购买上限的提示
       if (this.$store.state.isFull) {
-        Toast('商品已被掏空(｀・ω・´)')
+        Toast('库存已被掏空(｀・ω・´)')
       }
     },
 
