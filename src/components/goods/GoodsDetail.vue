@@ -132,7 +132,7 @@ export default {
       if (this.$store.state.isFull) {
         return Toast('库存已被掏空(｀・ω・´)')
       }
-      // 显示小球
+      // 库存未满的时候显示小球动画
       this.ballFlag = !this.ballFlag
     },
 

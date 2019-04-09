@@ -41,12 +41,16 @@ export default {
       }
   },
   computed: {
+    // 购物车商品列表
     goodsList () {
       return this.$store.state.goods
-    },
+    }, 
+    // 合计价格
     totalPrice () {
       return this.$store.getters.totalPrice
     },
+    /* 注意下面都是在 v-model 上使用计算属性, 所以需要设定 set 达到双重绑定的效果(具体查看官网 vuex 模块) */
+    // 商品选中状态列表
     idList: {
       get () {
         return this.$store.state.idList
@@ -55,6 +59,7 @@ export default {
         this.$store.commit('updateIdList', value)
       }
     },
+    // 全选状态
     checkedAll: {
       get () {
         return this.$store.state.checkedAll

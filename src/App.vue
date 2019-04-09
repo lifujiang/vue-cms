@@ -64,6 +64,7 @@ export default {
     goBack () {
       this.$router.go(-1)
     },
+    // 是否为主页面
     isHidden () {
       for (var item of hiddenList) {
         if (this.$route.path === item) {
@@ -77,6 +78,7 @@ export default {
       el.style.opacity = 0
     },
     enter (el, done) {
+      // 主页面不使用 transform 动画, 否则与 fixed 会产生冲突
       if (!this.isIndexPage) el.style.transform = 'translateX(100%)'
       el.offsetWidth
       el.style.position = 'relative'

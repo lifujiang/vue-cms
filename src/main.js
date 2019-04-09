@@ -42,12 +42,13 @@ Vue.use(VuePreview)
 // 声明 Vuex
 var store = new Vuex.Store({
   state: {
-    goods: [],
-    isFull: false,
-    idList: [],
-    checkedAll: false
+    goods: [], // 购物车商品列表
+    isFull: false, // 库存是否不足
+    idList: [], // 购物车选中商品的id列表(vant 库存储状态的方式)
+    checkedAll: false // 是否全选
   },
   getters: {
+    // 购物车图标的数量
     showCartCount (state) {
       var total = 0
       state.goods.forEach(item => {
@@ -55,6 +56,7 @@ var store = new Vuex.Store({
       })
       return total
     },
+    // 加入购物车时库存是否不足
     isFull: (state) => (id) => {
       state.goods.some(item => {
         if (item.id === parseInt(id)) {
@@ -65,7 +67,9 @@ var store = new Vuex.Store({
         }
       })
     },
+    // 合计价格
     totalPrice (state) {
+      // 临时总价格
       var totalPrice = 0
       state.goods.forEach(item => {
         if (item.selected) totalPrice += (item.sale_price * item.count)
@@ -105,26 +109,34 @@ var store = new Vuex.Store({
       })
       state.goods.splice(i, 1)
     },
+    // 更新商品数量(通过按钮或输入数值更新)
     updateGoodsCount (state, obj) {
       state.goods.some(item => {
         if (item.id === parseInt(obj.id)) {
           item.count = obj.count
+          // 更新剩余库存
           item.remain_stock = item.stock_quantity - obj.count
           return true
         }
       })
     },
+    // 更新购物车选中商品的id
     updateIdList (state, idList) {
       state.idList = idList
+      // 商品列表长度等于商品选中列表长度即为全选
+      // 如果两者都为0, 也会得到 true, 需注意
       if (state.idList.length === state.goods.length && state.goods.length !== 0) {
         state.checkedAll = true
         return
       }
       state.checkedAll = false
     },
+    // 更新全选状态
     updateCheckedAll (state, checkedAll) {
       state.checkedAll = checkedAll
+      // 先清空选中列表
       state.idList = []
+      // 根据全选按钮布尔值确定是否更新 idList
       state.goods.forEach(item => {
         if (checkedAll) state.idList.push(item.id)
       })
