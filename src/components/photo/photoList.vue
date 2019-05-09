@@ -47,21 +47,33 @@ export default {
     },
     // 获取图片类型列表数据
     getImgCate () {
-      this.$http.get('getImgCate').then(res => {
-        if (res.body.status === 0) {
-          this.cate_items = res.body.list
+      this.$api.imgCate()
+      .then(res => {
+        if (res.data.status === 0) {
+          this.cate_items = res.data.list
           this.cate_items.unshift({cateid: 0, title: '全部'})
+        } else {
+          Toast('获取图片类型失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
     // 获取图片内容类别数据
     getImgList () {
-      this.$http.get('getImgList', { params: { cateid: this.navIndex } }).then(res => {
-        if (res.body.status === 0) {
-          this.img_items = res.body.list
+      this.$api.imgList({
+        cateid: this.navIndex
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.img_items = res.data.list
         } else {
           Toast('获取图片失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
     routerHandler (id) {

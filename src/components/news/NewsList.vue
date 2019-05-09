@@ -28,12 +28,16 @@ export default {
   },
   methods: {
     getNewsList() {
-      this.$http.get('getNewsList').then(res => {
-        if(res.body.status == 0) {
-          this.newsList = res.body.list
+      this.$api.newsList()
+      .then(res => {
+        if (res.data.status === 0) {
+          this.newsList = res.data.list
         } else {
           Toast('获取数据失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   }

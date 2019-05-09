@@ -2,12 +2,13 @@
 // vue 包
 import Vue from 'vue'
 
+// 导入 api
+import api from './api/getAPI'
+
 // Vuex 包
 import Vuex from 'vuex'
 // vue-router
 import VueRouter from 'vue-router'
-// vue-resource
-import VueResource from 'vue-resource'
 
 // 样式
 import './lib/mui/css/mui.min.css'
@@ -31,10 +32,12 @@ import VuePreview from 'vue-preview'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 
+// 将 api 接口挂载到 prototype
+Vue.prototype.$api = api
+
 /* 使用模块 */
 Vue.use(Vuex)
 Vue.use(Vant)
-Vue.use(VueResource)
 Vue.use(MintUI)
 Vue.use(Cube)
 Vue.use(VuePreview)
@@ -43,7 +46,6 @@ Vue.use(VuePreview)
 var store = new Vuex.Store({
   state: {
     goods: [], // 购物车商品列表
-    isFull: false, // 库存是否不足
     idList: [], // 购物车选中商品的id列表(vant 库存储状态的方式)
     checkedAll: false // 是否全选
   },
@@ -57,7 +59,7 @@ var store = new Vuex.Store({
       return total
     },
     // 加入购物车时库存是否不足
-    isFull: (state) => (id) => {
+    lackStock: (state) => (id) => {
       state.goods.some(item => {
         if (item.id === parseInt(id)) {
           if (item.remain_stock <= 0) {
@@ -78,19 +80,19 @@ var store = new Vuex.Store({
     }
   },
   mutations: {
-    // 添加商品到购物车(state)
+    // 添加商品到购物车
     createGoods (state, obj) {
-      // 以存在的商品则通过循环添加
+      // 添加物品时全选关闭
       state.checkedAll = false
       var flag = false
       state.goods.some(item => {
         if (item.id === parseInt(obj.id)) {
           flag = true
           if (item.remain_stock - obj.count < 0) {
-            state.isFull = true
+            state.lackStock = true
             return true
           }
-          state.isFull = false
+          state.lackStock = false
           item.remain_stock -= obj.count
           item.count += obj.count
           return true
@@ -143,11 +145,6 @@ var store = new Vuex.Store({
     }
   }
 })
-
-// 指定 vue-resource 根路径
-Vue.http.options.root = 'http://localhost:3030/'
-
-Vue.http.options.emulateJSON = true
 
 // 安装路由
 Vue.use(VueRouter)

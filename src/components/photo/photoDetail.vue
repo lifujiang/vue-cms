@@ -32,24 +32,38 @@ export default {
   methods: {
     // 获取除缩略图以外的主要内容
     getImgDetail () {
-      this.$http.get('getImgDetail', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.detailList = res.body.list
+      this.$api.imgDetail({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.detailList = res.data.list
         } else {
           Toast('加载图片详情失败')
         }
       })
+      .catch(err => {
+        this.$api.error(err)
+      })
     },
     // 获取缩略图
     getImgPreview () {
-      this.$http.get('getImgPreview', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.imgList = res.body.list
+      this.$api.imgPreview({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.imgList = res.data.list
           for (const item of this.imgList) {
             item.w = 640
             item.h = 480
           }
+        } else {
+          Toast('加载图片缩略图失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   }

@@ -18,10 +18,16 @@ export default {
   },
   methods: {
     getGoodsRCMD () {
-      this.$http.get('getGoodsRCMD', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.RCMDList = res.body.list
+      this.$api.getGoodsRCMD({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.RCMDList = res.data.list
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   }

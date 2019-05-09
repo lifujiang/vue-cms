@@ -33,10 +33,13 @@ export default {
   },
   methods: {
     getGoodsList () {
-      this.$http.get('getGoodsList', { params: { pageIndex: this.pageIndex } }).then(res => {
-        if (res.body.status === 0) {
-          this.goodsList = this.goodsList.concat(res.body.list)
-          if (res.body.list.length === 0) {
+      this.$api.goodsList({
+        pageIndex: this.pageIndex
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.goodsList = this.goodsList.concat(res.data.list)
+          if (res.data.list.length === 0) {
             Toast('到底了o(╯□╰)o')
             this.gdsloading = '商品已加载完毕'
             document.querySelector('#gdsloading').setAttribute('disabled', 'disabled')
@@ -44,6 +47,9 @@ export default {
         } else {
           Toast('加载商品列表失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
     getMoreGds () {

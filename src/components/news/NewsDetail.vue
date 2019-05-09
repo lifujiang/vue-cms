@@ -27,12 +27,18 @@ export default {
   },
   methods: {
     getNewsDetail () {
-      this.$http.get('getNewsDetail', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.newsDetail = res.body.list
+      this.$api.newsDetail({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.newsDetail = res.data.list
         } else {
           Toast('图片加载失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   },

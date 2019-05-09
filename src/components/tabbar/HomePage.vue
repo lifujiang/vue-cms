@@ -38,7 +38,7 @@
         <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-4">
           <a href="#">
             <img src="../../images/menu6.png" alt="">
-            <div class="mui-media-body">练习我们</div>
+            <div class="mui-media-body">联系我们</div>
           </a>
         </li>
       </ul>
@@ -60,13 +60,17 @@ export default {
   },
   methods: {
     lunbo() {
-      this.$http.get('lunbo').then(res => {
-        if(res.body.status == 0) {
+      this.$api.lunbo()
+      .then(res =>{
+        if(res.data.status == 0) {
           // 成功了
-          this.lunboList = res.body.list
+          this.lunboList = res.data.list
         } else {
           Toast('图片加载失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   },

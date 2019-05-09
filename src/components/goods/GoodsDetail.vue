@@ -76,30 +76,42 @@ export default {
   },
   computed: {
     // 判断添加购物车数量是否大于已添加量
-    isFull () {
-      return this.$store.getters.isFull(this.goodsDetailList.id)
+    lackStock () {
+      return this.$store.getters.lackStock(this.goodsDetailList.id)
     }
   },
   methods: {
     // 获取轮播图
     getGoodsSwiper () {
-      this.$http.get('getGoodsSwiper', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.goodsSwiperList = res.body.list
+      this.$api.goodsSwiper({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.goodsSwiperList = res.data.list
         } else {
           Toast('载入商品轮播图失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
 
     // 获取商品信息
     getGoodsDetail () {
-      this.$http.get('getGoodsDetail', { params: { id: this.id } }).then(res => {
-        if (res.body.status === 0) {
-          this.goodsDetailList = res.body.list
+      this.$api.goodsDetail({
+        id: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.goodsDetailList = res.data.list
         } else {
           Toast('载入商品详情失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
 
@@ -129,7 +141,7 @@ export default {
       // 使用 commit 方法改变 state
       this.$store.commit('createGoods', cartObj)
       // 商品购买上限在 mutaitions 提前处理, 这里只需要完成超过购买上限的提示
-      if (this.$store.state.isFull) {
+      if (this.$store.state.lackStock) {
         return Toast('库存已被掏空(｀・ω・´)')
       }
       // 库存未满的时候显示小球动画

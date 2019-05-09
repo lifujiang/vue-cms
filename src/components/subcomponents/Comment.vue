@@ -36,10 +36,14 @@ export default {
   methods: {
     // 获取评论
     getComment () {
-      this.$http.get('getComment', { params: { artid: this.id,  pageIndex: this.pageIndex} }).then((res) => {
-        if (res.body.status === 0) {
-          this.commentList = this.commentList.concat(res.body.list)
-          if (res.body.list.length === 0) {
+      this.$api.comment({
+        artid: this.id,
+        pageIndex: this.pageIndex
+      })
+      .then(res => {
+        if (res.data.status === 0) {
+          this.commentList = this.commentList.concat(res.data.list)
+          if (res.data.list.length === 0) {
             Toast('到底了o(╯□╰)o')
             this.cmtloading = '评论已加载完毕'
             document.querySelector('#cmtloading').setAttribute('disabled', 'disabled')
@@ -47,6 +51,9 @@ export default {
         } else {
           Toast('获取评论失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     },
     // 加载更多评论
@@ -59,12 +66,13 @@ export default {
           Toast('评论或用户名不能为空')
           return 
       }
-      this.$http.post('postComment', {
-         cmt_name: this.cmt_name,
-         cmt_content: this.cmt_content,
-         artid: this.id
-      }).then((res) => {
-        if (res.body.status === 0) {
+      this.$api.postComment({
+        cmt_name: this.cmt_name,
+        cmt_content: this.cmt_content,
+        artid: this.id
+      })
+      .then(res => {
+        if (res.data.status === 0) {
           this.commentList.unshift({
             add_time: moment().format('YYYY-M-D HH:mm:ss'),
             user_name: this.cmt_name,
@@ -74,6 +82,9 @@ export default {
         } else {
           Toast('发表评论失败')
         }
+      })
+      .catch(err => {
+        this.$api.error(err)
       })
     }
   }
