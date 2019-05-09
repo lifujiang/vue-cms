@@ -73,9 +73,12 @@ var store = new Vuex.Store({
     totalPrice (state) {
       // 临时总价格
       var totalPrice = 0
-      state.goods.forEach(item => {
-        if (item.selected) totalPrice += (item.sale_price * item.count)
+      state.idList.forEach(i => {
+        state.goods.forEach(item => {
+          if (i === item.id) totalPrice += (item.sale_price * item.count)
+        })
       })
+
       return totalPrice
     }
   },
